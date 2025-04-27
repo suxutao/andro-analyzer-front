@@ -5,6 +5,8 @@ import { ElMessage } from 'element-plus';
 const res = ref('未连接')
 const color = ref('red')
 const getTestData = async () => {
+  color.value = 'red'
+  res.value = '未连接'
   const result = await testService()
   console.log(result);
   ElMessage.success('服务已成功连接')

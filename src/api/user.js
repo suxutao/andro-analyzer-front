@@ -1,9 +1,11 @@
 import request from '@/api/request.js'
 
 
-export const predictService=(url)=>{
+export const predictService=(data)=>{
     const params =new URLSearchParams()
-    params.append('apkURL',url)
+    for(let key in data){
+        params.append(key,data[key])
+    }
     return request.post('/predict',params)
 }
 

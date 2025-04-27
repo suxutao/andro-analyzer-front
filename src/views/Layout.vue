@@ -39,7 +39,8 @@ import {
             </el-main>
 
             <el-footer class="footer">
-                <span>电子科技大学 信安团队 © 2025</span>
+                <div>电子科技大学</div>
+                <div>© 2025 All Rights Reserved</div>
             </el-footer>
         </el-container>
     </el-container>
@@ -92,18 +93,19 @@ import {
 
     // 内容卡片样式
     .content-card {
+        max-width: 900px;
         background: white;
         border-radius: 4px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
         padding: 20px;
-        margin-bottom: 20px;
+        margin: 0 auto 20px;
     }
 }
 
 // 底部栏样式
 .footer {
     height: 60px;
-    line-height: 60px;
+    line-height: 25px;
     text-align: center;
     color: #999;
     font-size: 14px;
