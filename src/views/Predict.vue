@@ -3,9 +3,11 @@ import { reactive, ref } from 'vue'
 import { genFileId } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import { ElMessage } from 'element-plus';
+import preStore from '@/stores/pre';
+import PredictResultVue from './PredictResult.vue';
 
+const pre = preStore()
 const upload = ref<UploadInstance>()
-const loading = ref(false)
 const form = reactive({
   type: '?',
   url: '?',
@@ -28,8 +30,10 @@ const uploadSuccess: UploadProps['onSuccess'] = (result) => {
 }
 
 import { predictService } from '@/api/user';
+import preDataStore from '@/stores/preData';
+const data = preDataStore()
 
-const onSubmit = async() => {
+const onSubmit = async () => {
   if (form.type == '?') {
     ElMessage.error('请选择分类方式')
     return
@@ -38,17 +42,20 @@ const onSubmit = async() => {
     ElMessage.error('请选择apk文件')
     return
   }
-  loading.value=true
+  pre.setLoad(true)
+  data.show = false
   const response = await predictService(form)
-  const result=response.data
-  loading.value=false
+  const result = response.data
+  pre.setLoad(false)
   ElMessage.success('apk解析完成')
-  console.log(result);
+  console.log(result)
+  data.data = result
+  data.show = true
 }
 </script>
 
 <template>
-  <div v-loading="loading" element-loading-text="后台apk解析中">
+  <div v-loading="pre.getLoad()" element-loading-text="后台apk解析中">
     <el-form :model="form" label-width="auto" style="max-width: 600px">
       <el-form-item label="分类方式">
         <el-radio-group v-model="form.type">
@@ -68,11 +75,11 @@ const onSubmit = async() => {
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit" style="margin-left: 220px">提交数据</el-button>
+        <el-button type="primary" @click="onSubmit">提交数据</el-button>
       </el-form-item>
     </el-form>
   </div>
-
+  <PredictResultVue v-show="data.show"></PredictResultVue>
 </template>
 
 <style scope>

@@ -104,8 +104,8 @@ import {
 
 // 底部栏样式
 .footer {
-    height: 60px;
-    line-height: 25px;
+    height: 50px;
+    line-height: 20px;
     text-align: center;
     color: #999;
     font-size: 14px;
