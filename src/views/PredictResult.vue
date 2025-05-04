@@ -6,8 +6,15 @@ const clearData = () => {
   data.show = false
   ElMessage.success('成功清除数据')
 }
-const sfcg = () => {
-
+import { sfcgService } from '@/api/user';
+import { ref } from 'vue';
+const imageURL = ref('/temp_sensitive.png')
+const sfcg = async () => {
+  ElMessage.info('开始渲染函数调用图')
+  imageURL.value = '/'
+  const response = await sfcgService()
+  imageURL.value = '/' + response.data.url
+  ElMessage.success(response.msg)
 }
 </script>
 
@@ -64,7 +71,32 @@ const sfcg = () => {
         </el-table>
       </el-collapse-item>
     </el-collapse>
-    <el-button type="primary" @click="sfcg" style="margin-top: 20px;">生成函数调用图</el-button>
+
+    <div class="demo-image__placeholder">
+      <div class="block">
+        <span class="demonstration">敏感函数调用图</span>
+        <el-image :src="imageURL" lazy>
+          <template #placeholder>
+            <div class="image-slot">Loading<span class="dot">...</span></div>
+          </template>
+          <template #error>
+            <div class="image-slot">
+              <el-icon><icon-picture /></el-icon>
+            </div>
+          </template>
+        </el-image>
+      </div>
+      <div class="block">
+        <span class="demonstration">完整函数调用图</span>
+        <el-image src="/temp_complete.png" lazy>
+          <template #placeholder>
+            <div class="image-slot">Loading<span class="dot">...</span></div>
+          </template>
+        </el-image>
+      </div>
+    </div>
+
+    <el-button type="primary" @click="sfcg" style="margin-top: 20px;">重新生成函数调用图</el-button>
     <el-button type="danger" @click="clearData" style="margin-top: 20px;">清空数据</el-button>
   </el-card>
 </template>
@@ -83,5 +115,44 @@ const sfcg = () => {
 
 .el-descriptions {
   margin-bottom: 20px;
+}
+
+.demo-image__placeholder .block {
+  padding: 30px 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  display: inline-block;
+  width: 49%;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.demo-image__placeholder .demonstration {
+  display: block;
+  color: var(--el-text-color-secondary);
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.demo-image__placeholder .el-image {
+  padding: 0 5px;
+  max-width: 400px;
+}
+
+.demo-image__placeholder.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--el-fill-color-light);
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+}
+
+.demo-image__placeholder .dot {
+  animation: dot 2s infinite steps(3, start);
+  overflow: hidden;
 }
 </style>

@@ -1,4 +1,4 @@
-import { reactive,ref } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 
 const preDataStore = defineStore('preData', () => {

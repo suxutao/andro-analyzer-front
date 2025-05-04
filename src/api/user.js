@@ -18,3 +18,7 @@ export const trainService=(url)=>{
 export const testService=()=>{
     return request.get('/')
 }
+
+export const sfcgService=()=>{
+    return request.get('/sfcg')
+}

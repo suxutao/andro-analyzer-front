@@ -39,7 +39,7 @@ const onSubmit = async () => {
     return
   }
   if (!form.url.endsWith('.apk')) {
-    ElMessage.error('请选择apk文件')
+    ElMessage.error('请选择apk文件并上传到服务器')
     return
   }
   pre.setLoad(true)
