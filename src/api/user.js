@@ -22,3 +22,7 @@ export const testService=()=>{
 export const sfcgService=()=>{
     return request.get('/sfcg')
 }
+
+export const loadService=()=>{
+    return request.get('/load')
+}
