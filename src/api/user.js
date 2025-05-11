@@ -9,10 +9,12 @@ export const predictService=(data)=>{
     return request.post('/predict',params)
 }
 
-export const trainService=(url)=>{
+export const trainService=(data)=>{
     const params =new URLSearchParams()
-    params.append('dataURL',url)
-    return request.post('/predict',params)
+    for(let key in data){
+        params.append(key,data[key])
+    }
+    return request.post('/train',params)
 }
 
 export const testService=()=>{
