@@ -3,7 +3,8 @@ import {
     Document,
     Setting,
     Connection,
-    MagicStick
+    MagicStick,
+    Clock
 } from '@element-plus/icons-vue'
 </script>
 
@@ -22,6 +23,12 @@ import {
                         <setting />
                     </el-icon>
                     <span>训练模型</span>
+                </el-menu-item>
+                <el-menu-item index="/history">
+                    <el-icon>
+                        <Clock />
+                    </el-icon>
+                    <span>历史记录</span>
                 </el-menu-item>
                 <el-menu-item index="/load">
                     <el-icon>

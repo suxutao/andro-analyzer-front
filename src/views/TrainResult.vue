@@ -26,6 +26,32 @@ const downloadFile = (fileName) => {
         </el-image>
       </div>
       <div class="block">
+        <span class="demonstration">模型架构</span>
+        <el-image src="/model.png">
+          <template #placeholder>
+            <div class="image-slot">Loading<span class="dot">...</span></div>
+          </template>
+          <template #error>
+            <div class="image-slot">
+              <el-icon><icon-picture /></el-icon>
+            </div>
+          </template>
+        </el-image>
+      </div>
+      <div class="block">
+        <span class="demonstration">Loss</span>
+        <el-image src="/Loss.png">
+          <template #placeholder>
+            <div class="image-slot">Loading<span class="dot">...</span></div>
+          </template>
+          <template #error>
+            <div class="image-slot">
+              <el-icon><icon-picture /></el-icon>
+            </div>
+          </template>
+        </el-image>
+      </div>
+      <div class="block">
         <span class="demonstration">精确率</span>
         <el-image src="/Precision.png">
           <template #placeholder>

@@ -4,6 +4,7 @@ import DemoVue from '@/views/Demo.vue'
 import PredictVue from "@/views/Predict.vue";
 import TrainVue from "@/views/Train.vue";
 import LoadVue from "@/views/Load.vue";
+import HistoryVue from "@/views/History.vue";
 
 //定义路由关系
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
             { path: '/predict', component: PredictVue },
             { path: '/train', component: TrainVue },
             { path: '/load', component: LoadVue },
+            { path: '/history', component: HistoryVue },
         ]
     }
 ]

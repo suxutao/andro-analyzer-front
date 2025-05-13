@@ -31,8 +31,13 @@ const uploadSuccess: UploadProps['onSuccess'] = (result) => {
 
 import { predictService } from '@/api/user';
 import preDataStore from '@/stores/preData';
-const data = preDataStore()
 
+// 处理原始数据结构
+const data = preDataStore()
+const clearData = () => {
+  data.show = false
+  ElMessage.success('成功清除数据')
+}
 const onSubmit = async () => {
   if (form.type == '?') {
     ElMessage.error('请选择分类方式')
@@ -76,6 +81,7 @@ const onSubmit = async () => {
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交数据</el-button>
+        <el-button type="danger" @click="clearData">关闭数据页面</el-button>
       </el-form-item>
     </el-form>
   </div>

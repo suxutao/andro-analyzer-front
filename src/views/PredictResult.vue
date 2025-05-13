@@ -16,16 +16,22 @@ const sfcg = async () => {
   imageURL.value = '/' + response.data.url
   ElMessage.success(response.msg)
 }
+const tableRowClassName = ({
+  row,
+  rowIndex,
+}) => {
+  return row.level === 'dangerous' ? 'warning-row' : ''
+}
 </script>
 
 <template>
-  <el-card class="app-analysis">
+  <el-card style="width: 1100px; transform: translateX(-100px);">
     <h1 style="text-align: center;">{{ data.data.软件名 }}软件分析报告</h1>
-    <el-descriptions title="应用基本信息" border column="2">
+    <el-descriptions title="应用基本信息" border column="1">
       <el-descriptions-item label="应用名称">
         <el-tag>{{ data.data.软件名 }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="图标"><el-image style="width: 60px; height: 60px" :src="data.data.图标" />
+      <el-descriptions-item label="图标"><el-image style="width: 200px; height: 200px" :src="data.data.图标" />
       </el-descriptions-item>
       <el-descriptions-item label="包名">{{ data.data.包名 }}</el-descriptions-item>
       <el-descriptions-item label="主Activity">{{ data.data.主Activity }}</el-descriptions-item>
@@ -38,7 +44,7 @@ const sfcg = async () => {
     </el-descriptions>
 
     <!-- 模型预测结果 -->
-    <el-descriptions title="分析结果" border column="2">
+    <el-descriptions title="分析结果" border column="1">
       <el-descriptions-item label="完整函数调用图节点数"><el-tag type="info">{{ data.data.完整节点数 }}</el-tag></el-descriptions-item>
       <el-descriptions-item label="敏感函数调用图节点数">
         <el-tag type="danger">{{ data.data.敏感节点数 }}</el-tag>
@@ -51,12 +57,16 @@ const sfcg = async () => {
     <el-collapse class="analysis-sections">
       <!-- 权限列表 -->
       <el-collapse-item title="软件权限列表（点击展开）" name="permissions">
-        <el-table :data="data.data.权限列表" height="200">
-          <el-table-column label="权限名称">
+        <el-table :data="data.data.权限列表" height="300" :row-class-name="tableRowClassName">
+          <el-table-column prop="permission" label="权限名称" width="400" />
+          <el-table-column prop="level" label="危险等级" width="120">
             <template #default="{ row }">
-              {{ row }}
+              <el-tag :type="row.level === 'dangerous' ? 'danger' : 'success'" effect="dark">
+                {{ row.level }}
+              </el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="label" label="权限标签" />
         </el-table>
       </el-collapse-item>
 
@@ -70,12 +80,31 @@ const sfcg = async () => {
           </el-table-column>
         </el-table>
       </el-collapse-item>
+
+      <!-- 服务列表 -->
+      <el-collapse-item title="软件服务列表（点击展开）" name="services">
+        <el-table :data="data.data.服务列表" height="200">
+          <el-table-column label="服务名称">
+            <template #default="{ row }">
+              {{ row }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-collapse-item>
     </el-collapse>
 
-    <div class="demo-image__placeholder">
+    <div class="demo-image">
+      <div class="block">
+        <span class="demonstration">完整函数调用图</span>
+        <el-image src="/temp_complete.png" style="width: 500px !important;" lazy>
+          <template #placeholder>
+            <div class="image-slot">Loading<span class="dot">...</span></div>
+          </template>
+        </el-image>
+      </div>
       <div class="block">
         <span class="demonstration">敏感函数调用图</span>
-        <el-image :src="imageURL" lazy>
+        <el-image :src="imageURL" lazy style="width: 500px !important;">
           <template #placeholder>
             <div class="image-slot">Loading<span class="dot">...</span></div>
           </template>
@@ -86,18 +115,10 @@ const sfcg = async () => {
           </template>
         </el-image>
       </div>
-      <div class="block">
-        <span class="demonstration">完整函数调用图</span>
-        <el-image src="/temp_complete.png" lazy>
-          <template #placeholder>
-            <div class="image-slot">Loading<span class="dot">...</span></div>
-          </template>
-        </el-image>
-      </div>
     </div>
 
-    <el-button type="primary" @click="sfcg" style="margin-top: 20px;">重新生成函数调用图</el-button>
-    <el-button type="danger" @click="clearData" style="margin-top: 20px;">清空数据</el-button>
+    <!-- <el-button type="primary" @click="sfcg" style="margin-top: 20px;">重新生成函数调用图</el-button> -->
+    <!-- <el-button type="danger" @click="clearData" style="margin:auto;margin-top: 20px;">关闭数据页面</el-button> -->
   </el-card>
 </template>
 
@@ -117,8 +138,9 @@ const sfcg = async () => {
   margin-bottom: 20px;
 }
 
-.demo-image__placeholder .block {
-  padding: 30px 0;
+
+.demo-image .block {
+  padding: 10px 0;
   text-align: center;
   border-right: solid 1px var(--el-border-color);
   display: inline-block;
@@ -127,7 +149,7 @@ const sfcg = async () => {
   vertical-align: top;
 }
 
-.demo-image__placeholder .demonstration {
+.demo-image .demonstration {
   display: block;
   color: var(--el-text-color-secondary);
   font-size: 18px;
@@ -135,24 +157,28 @@ const sfcg = async () => {
   color: black;
 }
 
-.demo-image__placeholder .el-image {
+el-image {
   padding: 0 5px;
-  max-width: 400px;
+  width: 500px;
 }
 
-.demo-image__placeholder.image-slot {
+.demo-image .image-slot {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 120%;
   background: var(--el-fill-color-light);
   color: var(--el-text-color-secondary);
   font-size: 14px;
 }
 
-.demo-image__placeholder .dot {
+.demo-image .dot {
   animation: dot 2s infinite steps(3, start);
   overflow: hidden;
+}
+
+.el-table .warning-row {
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
 }
 </style>
