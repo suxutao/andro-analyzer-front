@@ -2,13 +2,8 @@
 import preDataStore from '@/stores/preData';
 import { ElMessage } from 'element-plus';
 const data = preDataStore()
-const clearData = () => {
-  data.show = false
-  ElMessage.success('成功清除数据')
-}
 import { sfcgService } from '@/api/user';
 import { ref } from 'vue';
-const imageURL = ref('/temp_sensitive.png')
 const sfcg = async () => {
   ElMessage.info('开始渲染函数调用图')
   imageURL.value = '/'
@@ -20,7 +15,7 @@ const tableRowClassName = ({
   row,
   rowIndex,
 }) => {
-  return row.level === 'dangerous' ? 'warning-row' : ''
+  return row.level === 'dangerous' ? 'warning-row' : 'success-row'
 }
 </script>
 
@@ -41,10 +36,13 @@ const tableRowClassName = ({
       <el-descriptions-item label="SDK版本">
         min: {{ data.data.最小SDK版本 }} / target: {{ data.data.目标SDK版本 }}
       </el-descriptions-item>
+      <el-descriptions-item label="Hash">
+        {{ data.data.hash }}
+      </el-descriptions-item>
     </el-descriptions>
 
     <!-- 模型预测结果 -->
-    <el-descriptions title="分析结果" border column="1">
+    <el-descriptions title="分析结果" border column="2">
       <el-descriptions-item label="完整函数调用图节点数"><el-tag type="info">{{ data.data.完整节点数 }}</el-tag></el-descriptions-item>
       <el-descriptions-item label="敏感函数调用图节点数">
         <el-tag type="danger">{{ data.data.敏感节点数 }}</el-tag>
@@ -104,7 +102,7 @@ const tableRowClassName = ({
       </div>
       <div class="block">
         <span class="demonstration">敏感函数调用图</span>
-        <el-image :src="imageURL" lazy style="width: 500px !important;">
+        <el-image :src="`/temp_sen/temp_sensitive_${data.data.软件名}.png`" lazy style="width: 500px !important;">
           <template #placeholder>
             <div class="image-slot">Loading<span class="dot">...</span></div>
           </template>
@@ -116,7 +114,6 @@ const tableRowClassName = ({
         </el-image>
       </div>
     </div>
-
     <!-- <el-button type="primary" @click="sfcg" style="margin-top: 20px;">重新生成函数调用图</el-button> -->
     <!-- <el-button type="danger" @click="clearData" style="margin:auto;margin-top: 20px;">关闭数据页面</el-button> -->
   </el-card>

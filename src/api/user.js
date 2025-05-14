@@ -28,3 +28,9 @@ export const sfcgService=()=>{
 export const loadService=()=>{
     return request.get('/load')
 }
+
+export const hashService=(url)=>{
+    const params =new URLSearchParams()
+    params.append('url',url)
+    return request.post('/hash',params)
+}

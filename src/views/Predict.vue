@@ -29,11 +29,13 @@ const uploadSuccess: UploadProps['onSuccess'] = (result) => {
   form.url = result.url
 }
 
-import { predictService } from '@/api/user';
+import { predictService,hashService } from '@/api/user';
 import preDataStore from '@/stores/preData';
+import { historyStore } from '@/stores/history';
 
 // 处理原始数据结构
 const data = preDataStore()
+const history = historyStore()
 const clearData = () => {
   data.show = false
   ElMessage.success('成功清除数据')
@@ -47,14 +49,22 @@ const onSubmit = async () => {
     ElMessage.error('请选择apk文件并上传到服务器')
     return
   }
-  pre.setLoad(true)
-  data.show = false
-  const response = await predictService(form)
-  const result = response.data
-  pre.setLoad(false)
+  let hash = await hashService(form.url)
+  let ind = history.findIndexByHash(hash.data)
+  if (ind !== -1) {
+    data.data = history.dataList[ind]
+    history.moveToFront(ind)
+  } else {
+    pre.setLoad(true)
+    data.show = false
+    const response = await predictService(form)
+    const result = response.data
+    pre.setLoad(false)
+    console.log(result)
+    data.data = result
+    history.addItem(result)
+  }
   ElMessage.success('apk解析完成')
-  console.log(result)
-  data.data = result
   data.show = true
 }
 </script>
