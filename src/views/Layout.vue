@@ -53,7 +53,6 @@ import {
             </el-main>
 
             <el-footer class="footer">
-                <div>电子科技大学</div>
                 <div>© 2025 All Rights Reserved</div>
             </el-footer>
         </el-container>
