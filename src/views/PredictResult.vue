@@ -26,7 +26,7 @@ const tableRowClassName = ({
       <el-descriptions-item label="应用名称">
         <el-tag>{{ data.data.软件名 }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="图标"><el-image style="width: 200px; height: 200px" :src="data.data.图标" />
+      <el-descriptions-item label="图标"><el-image style="width: 100px; height: 100px" :src="data.data.图标" />
       </el-descriptions-item>
       <el-descriptions-item label="包名">{{ data.data.包名 }}</el-descriptions-item>
       <el-descriptions-item label="主Activity">{{ data.data.主Activity }}</el-descriptions-item>
